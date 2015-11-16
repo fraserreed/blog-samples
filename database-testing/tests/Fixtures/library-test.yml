@@ -1,0 +1,23 @@
+authors:
+  -
+    id: 100
+    name: "Mordecai Richler"
+  -
+    id: 101
+    name: "Farley Mowat"
+books:
+  -
+    id: 200
+    isbn: "978-0671028473"
+    title: "The Apprenticeship of Duddy Kravitz"
+    author_id: 100
+  -
+    id: 201
+    isbn: "978-0887769252"
+    title: "Jacob Two-Two Meets the Hooded Fang"
+    author_id: 100
+  -
+    id: 202
+    isbn: "978-1550139891"
+    title: "The Farfarers"
+    author_id: 101

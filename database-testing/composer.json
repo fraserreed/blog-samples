@@ -1,0 +1,17 @@
+{
+  "name":"fraserreed/database-testing",
+  "require":{
+    "php":">=5.5",
+    "robmorgan/phinx":" 0.4.6"
+  },
+  "require-dev":{
+    "phpunit/phpunit": "~4.8",
+    "phpunit/dbunit": "~2"
+  },
+  "autoload":{
+    "psr-4":{
+      "DatabaseTesting\\":"src/",
+      "DatabaseTesting\\Tests\\":"tests/"
+    }
+  }
+}

@@ -1,0 +1,41 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.hostname = "fraserreed-database-testing"
+
+  # Every Vagrant virtual environment requires a box to build off of.
+  config.vm.box = "opscode-ubuntu-14.04"
+
+  # The url from where the 'config.vm.box' box will be fetched
+  config.vm.box_url = "https://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-i386-vagrant-disk1.box"
+
+  config.vm.network :private_network, ip: "10.0.0.20"
+
+  # Create a forwarded port mapping which allows access to a specific port
+  # within the machine from a port on the host machine. In the example below,
+  # accessing "localhost:8080" will access port 80 on the guest machine.
+  config.vm.network :forwarded_port, guest: 80, host: 8080
+
+  # Set up the vagrant machine for the tutorial
+  #
+  # NOTE: this is for the tutorial only, do not open privileges using the commands below
+  # in a non-sample environment.
+
+  config.vm.define :varnish do |varnish|
+    $script_varnish = <<SCRIPT
+sudo apt-get update
+sudo apt-get install debconf-utils
+sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password tutorial'
+sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password tutorial'
+sudo apt-get -y install mysql-server
+sudo apt-get -y install php5-mysql
+sudo sed -i 's/bind-address/#bind-address/' /etc/mysql/my.cnf
+sudo service mysql restart
+mysql -u root -ptutorial -e "GRANT ALL ON *.* TO 'root'@'%' IDENTIFIED BY 'tutorial'"
+mysql -u root -ptutorial -e "CREATE DATABASE library"
+SCRIPT
+
+      varnish.vm.provision :shell, :inline => $script_varnish
+    end
+end

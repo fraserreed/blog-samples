@@ -1,0 +1,35 @@
+<phpunit bootstrap="./tests/bootstrap.php"
+         verbose="false"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true">
+
+    <php>
+        <var name="DB_DSN" value="mysql:host=10.0.0.20;dbname=library;" />
+        <var name="DB_USER" value="root" />
+        <var name="DB_PASSWD" value="tutorial" />
+    </php>
+
+    <testsuites>
+        <testsuite name="persistence">
+            <directory>./tests/Persistence</directory>
+        </testsuite>
+    </testsuites>
+
+    <!--<filter>-->
+        <!--<whitelist addUncoveredFilesFromWhitelist="true">-->
+            <!--<directory>./</directory>-->
+            <!--<exclude>-->
+                <!--<directory>./migrations</directory>-->
+                <!--<directory>./tests</directory>-->
+                <!--<directory>./vendor</directory>-->
+            <!--</exclude>-->
+        <!--</whitelist>-->
+    <!--</filter>-->
+
+    <!--<logging>-->
+        <!--<log type="coverage-html" target="./report/html/" charset="UTF-8"-->
+             <!--highlight="false" lowUpperBound="35" highLowerBound="70"/>-->
+        <!--<log type="coverage-clover" target="./report/logs/clover.xml"/>-->
+    <!--</logging>-->
+</phpunit>
