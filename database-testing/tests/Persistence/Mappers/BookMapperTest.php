@@ -5,6 +5,7 @@ namespace DatabaseTesting\Tests\Persistence\Mappers;
 use DatabaseTesting\Tests\Persistence\ArrayDataSet;
 use DatabaseTesting\Tests\Persistence\DatabaseTestCase;
 
+use DatabaseTesting\Mappers\BookMapper;
 
 class BookMapperTest extends DatabaseTestCase
 {
@@ -43,48 +44,51 @@ class BookMapperTest extends DatabaseTestCase
 
     public function testFetchAll()
     {
-        $this->markTestIncomplete( 'Not written yet.' );
-//        $bookRecords = $this->db->fetchAll( "SELECT id, isbn, author, title FROM books" );
-//
-//        $books = array();
-//
-//        if( count( $bookRecords ) > 0 )
-//        {
-//            foreach( $bookRecords as $bookRecord )
-//            {
-//                $book = new Book();
-//                $book->setId( $bookRecord[ 'id' ] );
-//                $book->setIsbn( $bookRecord[ 'isbn' ] );
-//                $book->setAuthor( $bookRecord[ 'author' ] );
-//                $book->setTitle( $bookRecord[ 'title' ] );
-//
-//                $books[] = $book;
-//            }
-//        }
-//
-//        return $books;
+        $bookMapper = new BookMapper( $this->getAdapter() );
+        $allBooks   = $bookMapper->fetchAll();
+
+        //verify the number of books returned
+        $this->assertCount( 3, $allBooks );
+
+        //verify each item
+        /** @var \DatabaseTesting\Model\Book $book */
+        $book = $allBooks[0];
+        $this->assertEquals( 200, $book->getId() );
+        $this->assertEquals( '978-0671028473', $book->getIsbn() );
+        $this->assertEquals( 100, $book->getAuthorId() );
+        $this->assertEquals( 'Mordecai Richler', $book->getAuthorName() );
+        $this->assertEquals( 'The Apprenticeship of Duddy Kravitz', $book->getTitle() );
+
+        $book = $allBooks[1];
+        $this->assertEquals( 201, $book->getId() );
+        $this->assertEquals( '978-0887769252', $book->getIsbn() );
+        $this->assertEquals( 100, $book->getAuthorId() );
+        $this->assertEquals( 'Mordecai Richler', $book->getAuthorName() );
+        $this->assertEquals( 'Jacob Two-Two Meets the Hooded Fang', $book->getTitle() );
+
+        $book = $allBooks[2];
+        $this->assertEquals( 202, $book->getId() );
+        $this->assertEquals( '978-1550139891', $book->getIsbn() );
+        $this->assertEquals( 101, $book->getAuthorId() );
+        $this->assertEquals( 'Farley Mowat', $book->getAuthorName() );
+        $this->assertEquals( 'The Farfarers', $book->getTitle() );
     }
 
     public function testFetchByISBN()
     {
-        $this->markTestIncomplete( 'Not written yet.' );
-//        $bookRecord = $this->db->fetchOne(
-//            "SELECT id, isbn, author, title FROM books WHERE isbn = ?",
-//            [ $isbn ]
-//        );
-//
-//        if( $bookRecord )
-//        {
-//            $book = new Book();
-//            $book->setId( $bookRecord[ 'id' ] );
-//            $book->setIsbn( $bookRecord[ 'isbn' ] );
-//            $book->setAuthor( $bookRecord[ 'author' ] );
-//            $book->setTitle( $bookRecord[ 'title' ] );
-//
-//            return $book;
-//        }
-//
-//        return null;
+        $bookMapper = new BookMapper( $this->getAdapter() );
+
+        /** @var \DatabaseTesting\Model\Book $book */
+        $book = $bookMapper->fetchByISBN( '978-0887769252' );
+        $this->assertEquals( 201, $book->getId() );
+        $this->assertEquals( '978-0887769252', $book->getIsbn() );
+        $this->assertEquals( 100, $book->getAuthorId() );
+        $this->assertEquals( 'Mordecai Richler', $book->getAuthorName() );
+        $this->assertEquals( 'Jacob Two-Two Meets the Hooded Fang', $book->getTitle() );
+
+        //also verify a not-found request
+        $book = $bookMapper->fetchByISBN( '978-9999988888' );
+        $this->assertNull( $book );
     }
 
     public function testInsert()
