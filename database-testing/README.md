@@ -7,3 +7,7 @@ Steps to run the code referenced in the blog post [Database Testing with PHPUnit
 3.  Run `composer install` to install local PHP packages
 4.  Run `vendor/bin/phinx migrate` to install the correct database schema and data
 5.  Run `vendor/bin/phpunit` to run the unit tests
+
+You can also optionally run the tests with code coverage, which can be viewed in the `report` directory:
+
+`vendor/bin/phpunit --coverage-html report`
