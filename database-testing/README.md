@@ -1,6 +1,6 @@
 ### Blog Sample:  Database Testing
 
-Steps to run the code referenced in the blog post [Database Testing with PHPUnit](http://blog.fraserreed.com/phpunit/2015/11/13/database-testing-with-phpunit.html).
+Steps to run the code referenced in the blog post [Database Testing with PHPUnit](http://blog.fraserreed.com/phpunit/2016/04/06/database-testing-with-phpunit.html).
 
 1.  Install Vagrant (https://www.vagrantup.com/)
 2.  Run `vagrant up` to install the ubuntu 14.04 vm, with MySQL preinstalled
