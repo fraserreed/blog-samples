@@ -1,0 +1,21 @@
+version: "2"
+
+networks:
+  default:
+    external:
+      name: develop
+
+services:
+  data:
+    image: busybox
+    volumes:
+      - .:/usr/src/app
+
+  python:
+    build: ./docker/python
+    volumes_from:
+      - data
+    external_links:
+      - laravelapp_mysql_1
+      - laravelapp_redis_1:redis
+    entrypoint: "celery -A python_celery_worker worker --concurrency=2 --loglevel=debug"

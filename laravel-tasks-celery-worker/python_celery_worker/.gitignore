@@ -1,0 +1,8 @@
+/logs/*
+.env
+.idea/
+.idea/*.xml
+__pycache__/
+*.pyc
+*.egg-info/
+*.egg
