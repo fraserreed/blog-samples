@@ -1,0 +1,61 @@
+version: "2"
+
+networks:
+  default:
+    external:
+      name: develop
+
+services:
+  data:
+    image: busybox
+    volumes:
+      - .:/var/www/app
+  nginx:
+    image: nginx
+    ports:
+      - "80:80"
+    links:
+      - fpm
+    volumes:
+      - ./docker/nginx/site.conf:/etc/nginx/conf.d/default.conf
+    volumes_from:
+      - data
+
+  fpm:
+    build: ./docker/php71-fpm
+    volumes_from:
+      - data
+    links:
+      - mysql
+      - redis
+
+  mysql:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: blog
+      MYSQL_PASSWORD: blog
+      MYSQL_DATABASE: blog
+    volumes:
+      - mysql:/var/lib/mysql
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+
+  artisan:
+    build: ./docker/php71-fpm
+    volumes:
+      - .:/var/www/html
+    links:
+      - mysql
+      - redis
+    entrypoint: "./artisan"
+    working_dir: /var/www/html
+
+volumes:
+  mysql:
+    driver: local
